@@ -93,55 +93,46 @@ export const useAppStore = create<AppState>((set, get) => ({
 
   seedDemo: () => {
     const students: Student[] = [
-      { id: 's1', name: 'Ishaan Sharma', roll: '102303795', hostel: 'Hostel B', pickup: 'hostel-b', drop: 'acad-a', status: 'waiting' },
-      { id: 's2', name: 'Mehak Arora', roll: '102303801', hostel: 'Hostel B', pickup: 'hostel-b', drop: 'acad-a', status: 'waiting' },
-      { id: 's3', name: 'Abhiram Singh', roll: '102303812', hostel: 'Hostel B', pickup: 'hostel-b', drop: 'acad-a', status: 'waiting' },
-      { id: 's4', name: 'Jyotika Mehra', roll: '102303823', hostel: 'Hostel B', pickup: 'hostel-b', drop: 'acad-a', status: 'waiting' },
+      // 5 students in Hostel B
+      { id: 's1', name: 'Ishaan Sharma', roll: '102303795', hostel: 'Hostel B', pickup: 'hostel-b', drop: 'library', status: 'waiting' },
+      { id: 's2', name: 'Mehak Arora', roll: '102303801', hostel: 'Hostel B', pickup: 'hostel-b', drop: 'library', status: 'waiting' },
+      { id: 's3', name: 'Abhiram Singh', roll: '102303812', hostel: 'Hostel B', pickup: 'hostel-b', drop: 'library', status: 'waiting' },
+      { id: 's4', name: 'Jyotika Mehra', roll: '102303823', hostel: 'Hostel B', pickup: 'hostel-b', drop: 'library', status: 'waiting' },
       { id: 's5', name: 'Aarav Gupta', roll: '102303834', hostel: 'Hostel B', pickup: 'hostel-b', drop: 'csed', status: 'waiting' },
-      { id: 's6', name: 'Riya Verma', roll: '102303845', hostel: 'Hostel B', pickup: 'hostel-b', drop: 'csed', status: 'waiting' },
-      { id: 's7', name: 'Kabir Malhotra', roll: '102303856', hostel: 'Hostel C', pickup: 'hostel-c', drop: 'acad-a', status: 'waiting' },
-      { id: 's8', name: 'Ananya Nanda', roll: '102303867', hostel: 'Hostel C', pickup: 'hostel-c', drop: 'acad-a', status: 'waiting' },
-      { id: 's9', name: 'Devansh Khurana', roll: '102303878', hostel: 'Main Gate', pickup: 'main-gate', drop: 'library', status: 'waiting' },
-      { id: 's10', name: 'Saanvi Kapoor', roll: '102303889', hostel: 'Library', pickup: 'library', drop: 'hostel-b', status: 'waiting' },
+      // 3 students in Hostel C
+      { id: 's6', name: 'Kabir Malhotra', roll: '102303856', hostel: 'Hostel C', pickup: 'hostel-c', drop: 'csed', status: 'waiting' },
+      { id: 's7', name: 'Ananya Nanda', roll: '102303867', hostel: 'Hostel C', pickup: 'hostel-c', drop: 'csed', status: 'waiting' },
+      { id: 's8', name: 'Riya Verma', roll: '102303845', hostel: 'Hostel C', pickup: 'hostel-c', drop: 'csed', status: 'waiting' },
     ];
 
     const drivers: Driver[] = [
-      { id: 'd1', name: 'Raj Kumar', plate: 'PB11-ER-4101', lat: 30.3572, lng: 76.3670, status: 'idle' },
-      { id: 'd2', name: 'Anil Verma', plate: 'PB11-ER-4102', lat: 30.3555, lng: 76.3660, status: 'idle' },
-      { id: 'd3', name: 'Surinder Pal', plate: 'PB11-ER-4103', lat: 30.3550, lng: 76.3652, status: 'idle' },
+      { id: 'd1', name: 'Raj Kumar', plate: 'PB11-ER-4101', lat: 30.3548, lng: 76.3645, status: 'idle' }, // Near Hostel B
+      { id: 'd2', name: 'Anil Verma', plate: 'PB11-ER-4102', lat: 30.3565, lng: 76.3655, status: 'idle' }, // Near Hostel C
+      { id: 'd3', name: 'Surinder Pal', plate: 'PB11-ER-4103', lat: 30.3572, lng: 76.3670, status: 'idle' }, // Main Gate (idle)
     ];
 
     set({ students, drivers, demoStep: 'seeded' });
   },
 
   createPools: () => {
-    const { students, hotspots } = get();
+    const { students } = get();
     
     const pools: Pool[] = [
       {
         id: 'pool-1',
-        studentIds: ['s1', 's2', 's3', 's4'],
+        studentIds: ['s1', 's2', 's3', 's4'], // 4 students from Hostel B to Library
         pickup: 'hostel-b',
-        drop: 'acad-a',
+        drop: 'library',
         otp: '123456',
         otpVerified: false,
         status: 'pending',
       },
       {
         id: 'pool-2',
-        studentIds: ['s5', 's6', 's7', 's8'],
-        pickup: 'hostel-b',
+        studentIds: ['s5', 's6', 's7', 's8'], // 1 from Hostel B + 3 from Hostel C to CSED
+        pickup: 'hostel-c', // Start at Hostel C
         drop: 'csed',
         otp: '789012',
-        otpVerified: false,
-        status: 'pending',
-      },
-      {
-        id: 'pool-3',
-        studentIds: ['s9', 's10'],
-        pickup: 'main-gate',
-        drop: 'library',
-        otp: '345678',
         otpVerified: false,
         status: 'pending',
       },
@@ -161,21 +152,32 @@ export const useAppStore = create<AppState>((set, get) => ({
   assignDrivers: () => {
     const { pools, drivers, hotspots } = get();
     
-    const updatedPools = pools.map((pool, index) => ({
-      ...pool,
-      driverId: drivers[index]?.id,
-      status: 'assigned' as const,
-    }));
+    // Pool 1: d1 (Hostel B driver) -> Hostel B to Library
+    // Pool 2: d2 (Hostel C driver) -> Hostel C -> Hostel B -> CSED
+    const poolAssignments = [
+      { poolId: 'pool-1', driverId: 'd1' },
+      { poolId: 'pool-2', driverId: 'd2' },
+    ];
 
-    const updatedDrivers = drivers.map((driver, index) => {
-      if (index < pools.length) {
+    const updatedPools = pools.map(pool => {
+      const assignment = poolAssignments.find(a => a.poolId === pool.id);
+      return {
+        ...pool,
+        driverId: assignment?.driverId,
+        status: 'assigned' as const,
+      };
+    });
+
+    const updatedDrivers = drivers.map(driver => {
+      const assignment = poolAssignments.find(a => a.driverId === driver.id);
+      if (assignment) {
         return {
           ...driver,
           status: 'assigned' as const,
-          assignedPoolId: pools[index].id,
+          assignedPoolId: assignment.poolId,
         };
       }
-      return driver;
+      return driver; // d3 stays idle
     });
 
     const updatedStudents = get().students.map(s => {
@@ -186,18 +188,44 @@ export const useAppStore = create<AppState>((set, get) => ({
       return s;
     });
 
+    // Create realistic routes following roads
     const trips: Trip[] = updatedPools.map(pool => {
-      const pickup = hotspots.find(h => h.id === pool.pickup)!;
-      const drop = hotspots.find(h => h.id === pool.drop)!;
-      
-      return {
-        id: `trip-${pool.id}`,
-        poolId: pool.id,
-        driverId: pool.driverId!,
-        route: [[pickup.lat, pickup.lng], [drop.lat, drop.lng]],
-        progress: 0,
-        status: 'pending',
-      };
+      if (pool.id === 'pool-1') {
+        // Hostel B to Library - following campus roads
+        return {
+          id: `trip-${pool.id}`,
+          poolId: pool.id,
+          driverId: pool.driverId!,
+          route: [
+            [30.3548, 76.3645], // Start at Hostel B
+            [30.3552, 76.3648], // Road waypoint 1
+            [30.3554, 76.3650], // Road waypoint 2
+            [30.3552, 76.3652], // Road waypoint 3
+            [30.3550, 76.3652], // Library
+          ],
+          progress: 0,
+          status: 'pending',
+        };
+      } else {
+        // Pool 2: Hostel C -> Hostel B -> CSED (multi-pickup route)
+        return {
+          id: `trip-${pool.id}`,
+          poolId: pool.id,
+          driverId: pool.driverId!,
+          route: [
+            [30.3565, 76.3655], // Start at Hostel C
+            [30.3560, 76.3652], // Road to Hostel B waypoint 1
+            [30.3555, 76.3648], // Road to Hostel B waypoint 2
+            [30.3548, 76.3645], // Pick up at Hostel B
+            [30.3552, 76.3646], // Road to CSED waypoint 1
+            [30.3556, 76.3647], // Road to CSED waypoint 2
+            [30.3560, 76.3648], // Road to CSED waypoint 3
+            [30.3562, 76.3648], // CSED destination
+          ],
+          progress: 0,
+          status: 'pending',
+        };
+      }
     });
 
     set({ 
