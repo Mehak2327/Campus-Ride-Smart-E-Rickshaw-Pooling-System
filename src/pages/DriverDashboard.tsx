@@ -35,10 +35,11 @@ if (demoStep === 'idle') {
   const [otpInput, setOtpInput] = useState('');
 
   useEffect(() => {
-    if (!currentUser || currentUser.role !== 'driver') {
-      navigate('/auth/driver');
-    }
-  }, [currentUser, navigate]);
+  if (!currentUser || currentUser.role !== 'driver') {
+    setCurrentUser({ role: 'driver', id: 'd1' });
+  }
+}, [currentUser]);
+
 
   const currentDriver = drivers.find((d) => d.id === currentUser?.id);
   const assignedPool = currentDriver?.assignedPoolId ? pools.find((p) => p.id === currentDriver.assignedPoolId) : null;
