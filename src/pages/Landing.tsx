@@ -1,110 +1,62 @@
-import { motion } from 'framer-motion';
-import { useNavigate } from 'react-router-dom';
-import { GraduationCap, Car, Shield } from 'lucide-react';
+import React from "react";
+import ThaparNavbar from "@/components/ThaparNavbar";
+import HeroThapar from "@/components/HeroThapar";
+import MapPanel from "@/components/MapPanel"; // you already have this; will continue to work. :contentReference[oaicite:4]{index=4}
+
+function FeatureCard({ title, desc, icon }: { title: string; desc: string; icon?: React.ReactNode }) {
+  return (
+    <div className="bg-white rounded-2xl p-6 shadow-sm border">
+      <div className="flex items-start gap-4">
+        <div className="h-12 w-12 rounded-lg bg-[#AA0000]/10 flex items-center justify-center text-[#AA0000] font-bold">
+          {icon ?? "R"}
+        </div>
+        <div>
+          <div className="font-semibold text-gray-800">{title}</div>
+          <div className="text-sm text-gray-500 mt-1">{desc}</div>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 export default function Landing() {
-  const navigate = useNavigate();
-
-  const roles = [
-    {
-      id: 'student',
-      title: 'Student',
-      description: 'Book rides, join pools, track your trip',
-      icon: GraduationCap,
-      gradient: 'from-primary/20 to-primary/5',
-      path: '/auth/student',
-    },
-    {
-      id: 'driver',
-      title: 'Driver',
-      description: 'Accept assignments, verify riders, complete trips',
-      icon: Car,
-      gradient: 'from-secondary/20 to-secondary/5',
-      path: '/auth/driver',
-    },
-    {
-      id: 'admin',
-      title: 'Admin',
-      description: 'Monitor system, manage operations, view analytics',
-      icon: Shield,
-      gradient: 'from-success/20 to-success/5',
-      path: '/auth/admin',
-    },
-  ];
-
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center p-4 bg-gradient-to-br from-background via-background to-primary/5">
-      <motion.div
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-        className="text-center mb-12"
-      >
-        <h1 className="text-6xl font-bold mb-4 neon-text">
-          Campus Ride
-        </h1>
-        <p className="text-xl text-muted-foreground">
-          Thapar Institute of Engineering & Technology, Patiala
-        </p>
-        <p className="text-lg text-muted-foreground mt-2">
-          Smart pooling • Real-time tracking • Secure OTP
-        </p>
-      </motion.div>
+    <div className="min-h-screen bg-gray-50">
+      <ThaparNavbar />
+      <main>
+        <HeroThapar />
 
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.3, duration: 0.6 }}
-        className="mb-8"
-      >
-        <h2 className="text-2xl font-semibold text-center mb-8 text-foreground">
-          Who are you?
-        </h2>
-      </motion.div>
-
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl w-full">
-        {roles.map((role, index) => (
-          <motion.button
-            key={role.id}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5 + index * 0.1, duration: 0.5 }}
-            whileHover={{ scale: 1.02, y: -4 }}
-            whileTap={{ scale: 0.98 }}
-            onClick={() => navigate(role.path)}
-            className={`glass-strong rounded-3xl p-8 text-left transition-all duration-300 hover:glow-primary group cursor-pointer`}
-          >
-            <div className={`inline-flex p-4 rounded-2xl bg-gradient-to-br ${role.gradient} mb-6 group-hover:scale-110 transition-transform duration-300`}>
-              <role.icon className="w-10 h-10 text-primary" />
-            </div>
-            
-            <h3 className="text-3xl font-bold mb-2 text-foreground group-hover:text-primary transition-colors">
-              {role.title}
-            </h3>
-            
-            <p className="text-muted-foreground text-lg leading-relaxed">
-              {role.description}
+        <section className="max-w-6xl mx-auto px-6 sm:px-8 lg:px-12 py-12">
+          <div className="text-center">
+            <h2 className="text-2xl font-bold text-gray-800">Why Campus Ride?</h2>
+            <p className="text-gray-600 mt-2 max-w-2xl mx-auto">
+              Smart pooling built for Thapar students — save time, save money, and reduce campus traffic.
             </p>
+          </div>
 
-            <div className="mt-6 flex items-center text-primary group-hover:translate-x-2 transition-transform duration-300">
-              <span className="text-sm font-semibold">Continue</span>
-              <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-              </svg>
-            </div>
-          </motion.button>
-        ))}
-      </div>
+          <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <FeatureCard title="Quick Pickup" desc="Fast match algorithm for minimal wait times." />
+            <FeatureCard title="Real-time Tracking" desc="Live driver location and estimated arrival." />
+            <FeatureCard title="Safe & Verified" desc="OTP verification for every ride." />
+          </div>
+        </section>
 
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.2, duration: 0.6 }}
-        className="mt-12 text-center text-sm text-muted-foreground"
-      >
-        <p>Powered by smart pooling algorithms • Real-time location tracking</p>
-        <p className="mt-1">Safe, efficient, and eco-friendly campus transportation</p>
-      </motion.div>
+        {/* Map preview (keeps your MapPanel behavior intact; small snapshot on landing) */}
+        <section className="max-w-6xl mx-auto px-6 sm:px-8 lg:px-12 pb-12">
+          <h3 className="text-lg font-semibold text-gray-800 mb-4">Live demo map preview</h3>
+          <div className="rounded-2xl overflow-hidden border">
+            {/* MapPanel exists in your repo and is safe to show here. :contentReference[oaicite:5]{index=5} */}
+            <MapPanel height="420px" showControls={false} />
+          </div>
+        </section>
+
+        <footer className="border-t bg-white">
+          <div className="max-w-6xl mx-auto px-6 sm:px-8 lg:px-12 py-6 flex items-center justify-between">
+            <div className="text-sm text-gray-600">© {new Date().getFullYear()} Campus Ride — Thapar University</div>
+            <div className="text-sm text-gray-500">Made with ❤️ for Thapar campus</div>
+          </div>
+        </footer>
+      </main>
     </div>
   );
 }
