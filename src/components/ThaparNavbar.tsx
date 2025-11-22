@@ -1,56 +1,57 @@
-
-
 import React from "react";
-import { NavLink } from "@/components/NavLink";
+import { NavLink as RouterNavLink } from "react-router-dom";
+
+function CNavLink({
+  to,
+  children,
+  className = "",
+}: {
+  to: string;
+  children: React.ReactNode;
+  className?: string;
+}) {
+  return (
+    <RouterNavLink
+      to={to}
+      className={({ isActive }) =>
+        `px-5 py-1.5 rounded-full text-sm font-medium transition-all ${isActive ? "bg-[#2A2525] text-white/100 ring-1 ring-[#8A0000]" : "text-white/90 hover:bg-white/6"} ${className}`
+      }
+    >
+      {children}
+    </RouterNavLink>
+  );
+}
 
 export default function ThaparNavbar() {
   return (
-    <nav className="w-full fixed top-0 left-0 z-50 bg-[#8A0000]/90 backdrop-blur-lg shadow-[0_4px_20px_rgba(0,0,0,0.2)]">
+    <nav className="w-full fixed top-0 left-0 z-50 bg-[#1E1B1B]/95 backdrop-blur-sm shadow-[0_6px_18px_rgba(0,0,0,0.6)]">
       <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-
         {/* Logo + Title */}
         <div className="flex items-center gap-3">
           <img
             src="/thapar-logo.png"
             alt="Thapar Logo"
-            className="h-10 rounded shadow-sm"
+            className="h-10 rounded-sm"
+            style={{ filter: "brightness(0) invert(1)" }}
           />
           <div className="text-white font-semibold text-lg leading-tight">
             Campus Ride
-            <div className="text-[11px] text-white/70">
-              Thapar University — Smart E-Rickshaw
-            </div>
+            <div className="text-[11px] text-white/60">Thapar University — Smart E-Rickshaw</div>
           </div>
         </div>
 
-        {/* Aesthetic Buttons */}
+        {/* Buttons */}
         <div className="flex items-center gap-3">
+          <CNavLink to="/auth/student">Student</CNavLink>
+          <CNavLink to="/auth/driver">Driver</CNavLink>
+          <CNavLink to="/auth/admin">Admin</CNavLink>
 
-          {/* Student Portal */}
-          <NavLink
-            to="/auth/student"
-            className="px-5 py-1.5 rounded-full border border-white/50 text-white text-sm font-medium hover:bg-white/10 transition-all"
+          <RouterNavLink
+            to="/"
+            className="px-5 py-1.5 rounded-full bg-[#8A0000] text-white text-sm font-semibold shadow-sm hover:bg-[#700000] transition"
           >
-            Student
-          </NavLink>
-
-          {/* Driver Portal */}
-          <NavLink
-            to="/auth/driver"
-            className="px-5 py-1.5 rounded-full border border-white/50 text-white text-sm font-medium hover:bg-white/10 transition-all"
-          >
-            Driver
-          </NavLink>
-
-          {/* Admin Portal */}
-          <NavLink
-            to="/auth/admin"
-            className="px-5 py-1.5 rounded-full border border-white/50 text-white text-sm font-medium hover:bg-white/10 transition-all"
-          >
-            Admin
-          </NavLink>
-
-          {/* ❌ DEMO REMOVED COMPLETELY ❌ */}
+            Book a Ride
+          </RouterNavLink>
         </div>
       </div>
     </nav>

@@ -1,63 +1,53 @@
 import React from "react";
+import { ArrowRight } from "lucide-react";
+import { Link } from "react-router-dom";
 
 export default function HeroThapar() {
   return (
-    <header className="relative h-[90vh] flex items-center justify-start">
+    <section className="pt-32 pb-24 bg-[#1E1B1B] text-white">
+      <div className="max-w-6xl mx-auto px-6 sm:px-8 lg:px-12">
+        <div className="grid lg:grid-cols-2 gap-10 items-center">
 
-      <div
-        className="absolute inset-0 bg-cover bg-center brightness-75"
-        style={{
-          backgroundImage: "url('/thapar.jpg')",
-        }}
-      />
+          {/* HERO TEXT */}
+          <div>
+            <h1 className="text-4xl sm:text-5xl font-bold leading-tight text-white">
+              Smart E-Rickshaw Pooling
+              <span className="block text-red-400 mt-2">for Thapar Campus</span>
+            </h1>
 
-      <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/45 to-transparent" />
+            <p className="mt-6 text-gray-300 max-w-md text-lg">
+              Book, track, and ride effortlessly. Designed exclusively for TIET
+              students to make campus commuting smoother and faster.
+            </p>
 
-      <div className="relative z-10 px-10 max-w-2xl ml-6 mt-10">
-        <h1 className="text-5xl sm:text-6xl font-extrabold text-white leading-tight drop-shadow">
-          Campus Ride
-          <span className="block text-[#FFDADA]">Smart E-Rickshaw Pooling</span>
-        </h1>
+            <div className="mt-8 flex gap-4">
+              <Link
+                to="/auth/student"
+                className="px-6 py-3 rounded-full bg-[#8A0000] hover:bg-[#700000] text-white font-semibold flex items-center gap-2 shadow-lg"
+              >
+                Book a Ride
+                <ArrowRight className="w-4 h-4" />
+              </Link>
 
-        <p className="mt-6 text-xl text-white/90 leading-relaxed">
-          Smarter, safer commuting inside Thapar University.  
-          Real-time tracking, OTP verification & efficient pooling.
-        </p>
+              <Link
+                to="#features"
+                className="px-6 py-3 rounded-full bg-[#2A2A2A] hover:bg-[#383838] text-gray-200 border border-[#3A3A3A]"
+              >
+                Learn More
+              </Link>
+            </div>
+          </div>
 
-        {/* Aesthetic Buttons */}
-        <div className="mt-10 flex gap-4">
-
-          {/* DEMO → Admin Login */}
-          <a
-            href="/auth/admin"
-            className="px-8 py-3 bg-white rounded-full text-[#8A0000] text-lg font-semibold shadow-md hover:bg-gray-100 hover:shadow-lg transition-all duration-200"
-          >
-            Demo
-          </a>
-
-          <a
-            href="/auth/student"
-            className="px-6 py-2.5 border border-[#FFD0D0]/40 text-white rounded-full text-sm font-medium hover:bg-[#D43B3B]/20 transition-all duration-200"
-          >
-            Student Portal
-          </a>
-
-          <a
-            href="/auth/driver"
-            className="px-6 py-2.5 border border-[#FFD0D0]/40 text-white rounded-full text-sm font-medium hover:bg-[#D43B3B]/20 transition-all duration-200"
-          >
-            Driver Portal
-          </a>
-
-          <a
-            href="/auth/admin"
-            className="px-6 py-2.5 border border-[#FFD0D0]/40 text-white rounded-full text-sm font-medium hover:bg-[#D43B3B]/20 transition-all duration-200"
-          >
-            Admin Portal
-          </a>
-
+          {/* HERO IMAGE */}
+          <div className="mt-6 lg:mt-0">
+            <img
+              src="/hero-rickshaw.png"
+              alt="Campus Ride Rickshaw"
+              className="w-full rounded-2xl shadow-[0_10px_40px_rgba(0,0,0,0.6)]"
+            />
+          </div>
         </div>
       </div>
-    </header>
+    </section>
   );
 }
