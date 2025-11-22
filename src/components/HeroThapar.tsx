@@ -2,7 +2,7 @@ import React from "react";
 
 export default function HeroThapar() {
   return (
-    <header className="relative h-[85vh] flex items-center justify-center bg-white">
+    <header className="relative h-[85vh] flex items-center justify-start bg-white">
 
       {/* Background Image */}
       <div
@@ -13,18 +13,18 @@ export default function HeroThapar() {
       {/* Soft Gradient */}
       <div className="absolute inset-0 bg-gradient-to-b from-white/90 via-white/70 to-white/40" />
 
-      {/* Center Content */}
-      <div className="relative z-10 text-center max-w-3xl px-6">
+      {/* LEFT ALIGNED CONTENT */}
+      <div className="relative z-10 max-w-3xl px-16 text-left">
         <h1 className="text-5xl font-extrabold text-gray-900 leading-tight">
           Thapar Campus Mobility Service
         </h1>
 
-        <p className="mt-5 text-lg text-gray-700 leading-relaxed">
+        <p className="mt-5 text-lg text-gray-700 leading-relaxed max-w-xl">
           A secure, efficient and eco-friendly transportation service inside Thapar University.
           Real-time tracking, student verification & intelligent pooling.
         </p>
 
-        <div className="mt-8 flex justify-center gap-4">
+        <div className="mt-8 flex justify-start gap-4">
           <a
             href="/auth/admin"
             className="px-7 py-3 bg-[#AA0000] rounded-full text-white text-lg font-semibold shadow hover:bg-[#8a0000] transition"
