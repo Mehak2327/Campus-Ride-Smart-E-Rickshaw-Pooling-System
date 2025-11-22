@@ -14,6 +14,7 @@ export default function StudentAuth() {
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const [roll, setRoll] = useState("");
+
   const navigate = useNavigate();
   const setCurrentUser = useAppStore((state) => state.setCurrentUser);
 
@@ -36,11 +37,11 @@ export default function StudentAuth() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 bg-[#1E1B1B] text-white">
+    <div className="min-h-screen flex items-center justify-center px-4 bg-background text-foreground">
       <Button
         variant="ghost"
         onClick={() => navigate("/")}
-        className="absolute top-4 left-4 text-gray-300 hover:text-white"
+        className="absolute top-4 left-4 text-foreground/60 hover:text-foreground"
       >
         <ArrowLeft className="w-4 h-4 mr-1" /> Back
       </Button>
@@ -49,18 +50,86 @@ export default function StudentAuth() {
         initial={{ opacity: 0, y: 15 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3 }}
-        className="w-full max-w-md glass rounded-2xl p-8 border border-[#3A3A3A]"
+        className="w-full max-w-md bg-card border border-border rounded-2xl p-8"
       >
         <div className="flex flex-col items-center mb-6">
-          <div className="p-4 rounded-xl bg-[#2A2A2A] border border-[#3A3A3A]">
-            <GraduationCap className="w-10 h-10 text-red-400" />
+          <div className="p-4 rounded-xl bg-card border border-border">
+            <GraduationCap className="w-10 h-10 text-primary" />
           </div>
         </div>
 
-        <h1 className="text-3xl font-bold text-center">Student Login</h1>
+        <h1 className="text-3xl font-bold text-center">Student Portal</h1>
+        <p className="text-center text-foreground/70 mt-1 mb-6">
+          {isLogin ? "Sign in to book rides" : "Create your student account"}
+        </p>
 
-        <form onSubmit={handleSubmit} className="space-y-4 mt-6">
+        <form onSubmit={handleSubmit} className="space-y-4">
+
           {!isLogin && (
             <>
               <div className="space-y-2">
-                <Label>Name</Label>
+                <Label>Full Name</Label>
+                <Input
+                  type="text"
+                  placeholder="Enter your full name"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  className="bg-card border-border text-foreground"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label>Roll Number</Label>
+                <Input
+                  type="text"
+                  placeholder="e.g. 102303795"
+                  value={roll}
+                  onChange={(e) => setRoll(e.target.value)}
+                  className="bg-card border-border text-foreground"
+                />
+              </div>
+            </>
+          )}
+
+          <div className="space-y-2">
+            <Label>Email</Label>
+            <Input
+              type="email"
+              placeholder="your.email@thapar.edu"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="bg-card border-border text-foreground"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label>Password</Label>
+            <Input
+              type="password"
+              placeholder="Enter your password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="bg-card border-border text-foreground"
+            />
+          </div>
+
+          <Button className="w-full bg-primary hover:bg-primary/80 text-primary-foreground rounded-full py-2">
+            {isLogin ? "Sign In" : "Sign Up"}
+          </Button>
+        </form>
+
+        <div className="text-center mt-6">
+          <button
+            onClick={() => setIsLogin(!isLogin)}
+            className="text-sm text-foreground/70 hover:text-primary"
+          >
+            {isLogin ? "Don't have an account?" : "Already have an account?"}
+            <span className="font-semibold text-primary ml-1">
+              {isLogin ? "Sign Up" : "Sign In"}
+            </span>
+          </button>
+        </div>
+      </motion.div>
+    </div>
+  );
+}

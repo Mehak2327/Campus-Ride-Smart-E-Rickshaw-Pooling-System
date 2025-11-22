@@ -9,11 +9,8 @@ import { useAppStore } from "@/store/useAppStore";
 import { toast } from "sonner";
 
 export default function DriverAuth() {
-  const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [name, setName] = useState("");
-  const [plate, setPlate] = useState("");
 
   const navigate = useNavigate();
   const setCurrentUser = useAppStore((state) => state.setCurrentUser);
@@ -21,27 +18,21 @@ export default function DriverAuth() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (isLogin) {
-      if (email && password) {
-        setCurrentUser({ role: "driver", id: "d1" });
-        toast.success("Logged in!");
-        navigate("/driver");
-      } else toast.error("Fill all fields");
+    if (email && password) {
+      setCurrentUser({ role: "driver", id: "d1" });
+      toast.success("Driver Login Successful");
+      navigate("/driver");
     } else {
-      if (email && password && name && plate) {
-        setCurrentUser({ role: "driver", id: "d1" });
-        toast.success("Driver created!");
-        navigate("/driver");
-      } else toast.error("Fill all fields");
+      toast.error("Fill all fields");
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 bg-[#1E1B1B] text-white">
+    <div className="min-h-screen flex items-center justify-center px-4 bg-background text-foreground">
       <Button
         variant="ghost"
         onClick={() => navigate("/")}
-        className="absolute top-4 left-4 text-gray-300 hover:text-white"
+        className="absolute top-4 left-4 text-foreground/60 hover:text-foreground"
       >
         <ArrowLeft className="w-4 h-4 mr-1" /> Back
       </Button>
@@ -50,51 +41,26 @@ export default function DriverAuth() {
         initial={{ opacity: 0, y: 15 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3 }}
-        className="w-full max-w-md glass rounded-2xl p-8 border border-[#3A3A3A]"
+        className="w-full max-w-md bg-card border border-border rounded-2xl p-8"
       >
         <div className="flex flex-col items-center mb-6">
-          <div className="p-4 rounded-xl bg-[#2A2A2A] border border-[#3A3A3A]">
-            <Car className="w-10 h-10 text-red-400" />
+          <div className="p-4 rounded-xl bg-card border border-border">
+            <Car className="w-10 h-10 text-primary" />
           </div>
         </div>
 
         <h1 className="text-3xl font-bold text-center">Driver Portal</h1>
 
         <form onSubmit={handleSubmit} className="space-y-4 mt-6">
-          {!isLogin && (
-            <>
-              <div className="space-y-2">
-                <Label>Name</Label>
-                <Input
-                  type="text"
-                  placeholder="Driver name"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  className="bg-[#2A2A2A] border-[#444] text-white"
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label>Vehicle Number</Label>
-                <Input
-                  type="text"
-                  placeholder="PB10-ER-1234"
-                  value={plate}
-                  onChange={(e) => setPlate(e.target.value)}
-                  className="bg-[#2A2A2A] border-[#444] text-white"
-                />
-              </div>
-            </>
-          )}
 
           <div className="space-y-2">
             <Label>Email</Label>
             <Input
               type="email"
-              placeholder="email@example.com"
+              placeholder="your.email@example.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="bg-[#2A2A2A] border-[#444] text-white"
+              className="bg-card border-border text-foreground"
             />
           </div>
 
@@ -102,29 +68,17 @@ export default function DriverAuth() {
             <Label>Password</Label>
             <Input
               type="password"
-              placeholder="Enter password"
+              placeholder="Enter your password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="bg-[#2A2A2A] border-[#444] text-white"
+              className="bg-card border-border text-foreground"
             />
           </div>
 
-          <Button className="w-full bg-[#8A0000] hover:bg-[#700000] text-white rounded-full py-2">
-            {isLogin ? "Sign In" : "Sign Up"}
+          <Button className="w-full bg-primary hover:bg-primary/80 text-primary-foreground rounded-full py-2">
+            Sign In
           </Button>
         </form>
-
-        <div className="text-center mt-6">
-          <button
-            onClick={() => setIsLogin(!isLogin)}
-            className="text-sm text-gray-300 hover:text-red-300"
-          >
-            {isLogin ? "Don't have an account?" : "Already have an account?"}
-            <span className="font-semibold text-red-400 ml-1">
-              {isLogin ? "Sign Up" : "Sign In"}
-            </span>
-          </button>
-        </div>
       </motion.div>
     </div>
   );

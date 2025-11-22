@@ -28,11 +28,11 @@ export default function AdminAuth() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 bg-[#1E1B1B] text-white">
+    <div className="min-h-screen flex items-center justify-center px-4 bg-background text-foreground">
       <Button
         variant="ghost"
         onClick={() => navigate("/")}
-        className="absolute top-4 left-4 text-gray-300 hover:text-white"
+        className="absolute top-4 left-4 text-foreground/60 hover:text-foreground"
       >
         <ArrowLeft className="w-4 h-4 mr-1" /> Back
       </Button>
@@ -41,17 +41,18 @@ export default function AdminAuth() {
         initial={{ opacity: 0, y: 15 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3 }}
-        className="w-full max-w-md glass rounded-2xl p-8 border border-[#3A3A3A]"
+        className="w-full max-w-md bg-card border border-border rounded-2xl p-8"
       >
         <div className="flex flex-col items-center mb-6">
-          <div className="p-4 rounded-xl bg-[#2A2A2A] border border-[#3A3A3A]">
-            <Shield className="w-10 h-10 text-red-400" />
+          <div className="p-4 rounded-xl bg-card border border-border">
+            <Shield className="w-10 h-10 text-primary" />
           </div>
         </div>
 
-        <h1 className="text-3xl font-bold text-center">Admin Login</h1>
+        <h1 className="text-3xl font-bold text-center">Admin Portal</h1>
 
         <form onSubmit={handleSubmit} className="space-y-4 mt-6">
+
           <div className="space-y-2">
             <Label>Email</Label>
             <Input
@@ -59,7 +60,7 @@ export default function AdminAuth() {
               placeholder="admin@thapar.edu"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="bg-[#2A2A2A] border-[#444] text-white"
+              className="bg-card border-border text-foreground"
             />
           </div>
 
@@ -70,12 +71,12 @@ export default function AdminAuth() {
               placeholder="Admin password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="bg-[#2A2A2A] border-[#444] text-white"
+              className="bg-card border-border text-foreground"
             />
           </div>
 
-          <Button className="w-full bg-[#8A0000] hover:bg-[#700000] text-white rounded-full py-2">
-            Login
+          <Button className="w-full bg-primary hover:bg-primary/80 text-primary-foreground rounded-full py-2">
+            Sign In
           </Button>
         </form>
       </motion.div>
