@@ -13,7 +13,7 @@ export default function HeroThapar() {
       {/* Soft Gradient */}
       <div className="absolute inset-0 bg-gradient-to-b from-white/90 via-white/70 to-white/40" />
 
-      {/* Centered Content */}
+      {/* Center Content */}
       <div className="relative z-10 text-center max-w-3xl px-6">
         <h1 className="text-5xl font-extrabold text-gray-900 leading-tight">
           Campus Ride — Smart E-Rickshaw Pooling
@@ -25,11 +25,12 @@ export default function HeroThapar() {
         </p>
 
         <div className="mt-8 flex justify-center gap-4">
+          {/* CHANGED: Book a Ride -> Demo */}
           <a
             href="/"
             className="px-7 py-3 bg-[#AA0000] rounded-full text-white text-lg font-semibold shadow hover:bg-[#8a0000] transition"
           >
-            Book a Ride
+            Demo
           </a>
 
           <a
@@ -37,6 +38,14 @@ export default function HeroThapar() {
             className="px-7 py-3 rounded-full border border-gray-400 text-gray-700 text-lg font-semibold hover:bg-gray-100 transition"
           >
             Student Login
+          </a>
+
+          {/* ADDED Driver Login */}
+          <a
+            href="/auth/driver"
+            className="px-7 py-3 rounded-full border border-gray-400 text-gray-700 text-lg font-semibold hover:bg-gray-100 transition"
+          >
+            Driver Login
           </a>
         </div>
 

@@ -11,11 +11,13 @@ export default function ThaparNavbar() {
           <img
             src="/thapar-logo.png"
             alt="Thapar Logo"
-            className="h-10"
+            className="h-10 w-auto object-contain"
           />
           <div className="text-white font-semibold text-lg leading-tight">
             Campus Ride
-            <div className="text-[11px] text-white/80">Thapar University — Smart E-Rickshaw</div>
+            <div className="text-[11px] text-white/80">
+              Thapar University — Smart E-Rickshaw
+            </div>
           </div>
         </div>
 
@@ -42,6 +44,7 @@ export default function ThaparNavbar() {
             Admin
           </NavLink>
 
+          {/* CHANGED → Demo */}
           <NavLink
             to="/"
             className="px-5 py-2 rounded-full bg-white text-[#7B0000] font-semibold text-sm shadow hover:bg-gray-100 transition"
