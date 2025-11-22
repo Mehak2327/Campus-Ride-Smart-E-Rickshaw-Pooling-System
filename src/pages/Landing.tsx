@@ -1,101 +1,62 @@
-import ThaparNavbar from "@/components/ui/ThaparNavbar";
-import HeroThapar from "@/components/ui/HeroThapar";
-import { Link } from "react-router-dom";
+import React from "react";
+import ThaparNavbar from "@/components/ThaparNavbar";
+import HeroThapar from "@/components/HeroThapar";
+import MapPanel from "@/components/MapPanel"; // you already have this; will continue to work. :contentReference[oaicite:4]{index=4}
+
+function FeatureCard({ title, desc, icon }: { title: string; desc: string; icon?: React.ReactNode }) {
+  return (
+    <div className="bg-white rounded-2xl p-6 shadow-sm border">
+      <div className="flex items-start gap-4">
+        <div className="h-12 w-12 rounded-lg bg-[#AA0000]/10 flex items-center justify-center text-[#AA0000] font-bold">
+          {icon ?? "R"}
+        </div>
+        <div>
+          <div className="font-semibold text-gray-800">{title}</div>
+          <div className="text-sm text-gray-500 mt-1">{desc}</div>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 export default function Landing() {
   return (
-    <div className="min-h-screen bg-white text-black">
-
-      {/* NAVBAR */}
+    <div className="min-h-screen bg-gray-50">
       <ThaparNavbar />
+      <main>
+        <HeroThapar />
 
-      {/* HERO */}
-      <HeroThapar />
-
-      {/* WHY CAMPUS RIDE */}
-      <section id="why" className="py-20 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-6 text-center">
-
-          <h2 className="text-4xl font-bold text-gray-900 tracking-tight">
-            Why Campus Ride?
-          </h2>
-
-          <p className="mt-4 text-gray-600 max-w-2xl mx-auto text-lg">
-            Smart pooling designed for Thapar students — save time, reduce congestion,
-            book faster and track rides with ease.
-          </p>
-
-          {/* Cards */}
-          <div className="grid md:grid-cols-3 gap-10 mt-16">
-
-            {/* Card 1 */}
-            <div className="
-              bg-white p-10 rounded-2xl shadow-sm border border-gray-200
-              hover:shadow-xl hover:-translate-y-1 transition-all duration-200
-            ">
-              <div className="w-16 h-16 mx-auto mb-5 rounded-xl bg-red-100 flex items-center justify-center">
-                <img src="/icons/bus.png" className="w-10 opacity-90" />
-              </div>
-              <h3 className="text-xl font-semibold mb-2">Smart Pooling</h3>
-              <p className="text-gray-600 leading-relaxed">
-                Reduce campus traffic and reach classes faster with optimized pooling.
-              </p>
-            </div>
-
-            {/* Card 2 */}
-            <div className="
-              bg-white p-10 rounded-2xl shadow-sm border border-gray-200
-              hover:shadow-xl hover:-translate-y-1 transition-all duration-200
-            ">
-              <div className="w-16 h-16 mx-auto mb-5 rounded-xl bg-red-100 flex items-center justify-center">
-                <img src="/icons/users.png" className="w-10 opacity-90" />
-              </div>
-              <h3 className="text-xl font-semibold mb-2">Student Friendly</h3>
-              <p className="text-gray-600 leading-relaxed">
-                Built exclusively for TIET students and campus drivers.
-              </p>
-            </div>
-
-            {/* Card 3 */}
-            <div className="
-              bg-white p-10 rounded-2xl shadow-sm border border-gray-200
-              hover:shadow-xl hover:-translate-y-1 transition-all duration-200
-            ">
-              <div className="w-16 h-16 mx-auto mb-5 rounded-xl bg-red-100 flex items-center justify-center">
-                <img src="/icons/shield.png" className="w-10 opacity-90" />
-              </div>
-              <h3 className="text-xl font-semibold mb-2">Safe & Verified</h3>
-              <p className="text-gray-600 leading-relaxed">
-                Verified drivers, OTP-secured rides and real-time tracking.
-              </p>
-            </div>
-
+        <section className="max-w-6xl mx-auto px-6 sm:px-8 lg:px-12 py-12">
+          <div className="text-center">
+            <h2 className="text-2xl font-bold text-gray-800">Why Campus Ride?</h2>
+            <p className="text-gray-600 mt-2 max-w-2xl mx-auto">
+              Smart pooling built for Thapar students — save time, save money, and reduce campus traffic.
+            </p>
           </div>
-        </div>
-      </section>
 
-      {/* CTA SECTION */}
-      <section className="py-24 bg-red-50 text-center">
-        <h2 className="text-3xl font-bold text-gray-900 mb-6">
-          Ready to Ride?
-        </h2>
+          <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <FeatureCard title="Quick Pickup" desc="Fast match algorithm for minimal wait times." />
+            <FeatureCard title="Real-time Tracking" desc="Live driver location and estimated arrival." />
+            <FeatureCard title="Safe & Verified" desc="OTP verification for every ride." />
+          </div>
+        </section>
 
-        <p className="text-gray-600 max-w-xl mx-auto mb-10">
-          Join thousands of TIET students using Campus Ride every day for faster and smarter commuting.
-        </p>
+        {/* Map preview (keeps your MapPanel behavior intact; small snapshot on landing) */}
+        <section className="max-w-6xl mx-auto px-6 sm:px-8 lg:px-12 pb-12">
+          <h3 className="text-lg font-semibold text-gray-800 mb-4">Live demo map preview</h3>
+          <div className="rounded-2xl overflow-hidden border">
+            {/* MapPanel exists in your repo and is safe to show here. :contentReference[oaicite:5]{index=5} */}
+            <MapPanel height="420px" showControls={false} />
+          </div>
+        </section>
 
-        <Link
-          to="/auth/student"
-          className="px-8 py-3 bg-red-600 hover:bg-red-700 text-white rounded-full text-lg font-semibold shadow-lg transition"
-        >
-          Get Started →
-        </Link>
-      </section>
-
-      {/* FOOTER */}
-      <footer className="py-6 text-center text-gray-500 text-sm border-t bg-white">
-        © {new Date().getFullYear()} Campus Ride • Thapar Institute of Engineering & Technology
-      </footer>
+        <footer className="border-t bg-white">
+          <div className="max-w-6xl mx-auto px-6 sm:px-8 lg:px-12 py-6 flex items-center justify-between">
+            <div className="text-sm text-gray-600">© {new Date().getFullYear()} Campus Ride — Thapar University</div>
+            <div className="text-sm text-gray-500">Made with ❤️ for Thapar campus</div>
+          </div>
+        </footer>
+      </main>
     </div>
   );
 }
