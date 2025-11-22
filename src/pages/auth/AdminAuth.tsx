@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { Shield, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -23,35 +22,42 @@ export default function AdminAuth() {
       toast.success("Admin Login Successful");
       navigate("/admin");
     } else {
-      toast.error("Fill all fields");
+      toast.error("Please fill all fields");
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 bg-[#1E1B1B] text-white">
-      <Button
-        variant="ghost"
-        onClick={() => navigate("/")}
-        className="absolute top-4 left-4 text-white/60 hover:text-white"
-      >
-        <ArrowLeft className="w-4 h-4 mr-1" /> Back
-      </Button>
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
 
-      <motion.div
-        initial={{ opacity: 0, y: 15 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.3 }}
-        className="w-full max-w-md bg-[#2A1414] border border-[#8A0000]/30 rounded-2xl p-8"
+      {/* BACK BUTTON */}
+      <button
+        onClick={() => navigate("/")}
+        className="absolute top-4 left-4 flex items-center gap-2 text-gray-700 hover:text-black"
       >
+        <ArrowLeft className="w-4 h-4" />
+        Back
+      </button>
+
+      {/* CARD */}
+      <div className="w-full max-w-md bg-white rounded-2xl shadow-lg border p-8">
+        
+        {/* ICON */}
         <div className="flex flex-col items-center mb-6">
-          <div className="p-4 rounded-xl bg-[#2A1414] border border-[#8A0000]/40">
-            <Shield className="w-10 h-10 text-[#8A0000]" />
+          <div className="p-4 rounded-xl bg-red-100">
+            <Shield className="w-10 h-10 text-red-600" />
           </div>
         </div>
 
-        <h1 className="text-3xl font-bold text-center">Admin Portal</h1>
+        {/* TITLE */}
+        <h1 className="text-3xl font-bold text-center text-gray-900">
+          Admin Portal
+        </h1>
+        <p className="text-center text-gray-600 mt-1 mb-6">
+          Sign in to manage the system
+        </p>
 
-        <form onSubmit={handleSubmit} className="space-y-4 mt-6">
+        {/* FORM */}
+        <form onSubmit={handleSubmit} className="space-y-4">
 
           <div className="space-y-2">
             <Label>Email</Label>
@@ -60,7 +66,6 @@ export default function AdminAuth() {
               placeholder="admin@tiet.edu"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="bg-[#2A1414] border border-[#8A0000]/30 text-white"
             />
           </div>
 
@@ -68,18 +73,21 @@ export default function AdminAuth() {
             <Label>Password</Label>
             <Input
               type="password"
-              placeholder="Enter admin password"
+              placeholder="Enter your password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="bg-[#2A1414] border border-[#8A0000]/30 text-white"
             />
           </div>
 
-          <Button className="w-full bg-[#8A0000] hover:bg-[#700000] text-white rounded-full py-2">
+          {/* BUTTON */}
+          <Button
+            type="submit"
+            className="w-full bg-red-600 hover:bg-red-700 text-white rounded-full py-2 mt-3"
+          >
             Sign In
           </Button>
         </form>
-      </motion.div>
+      </div>
     </div>
   );
 }
