@@ -134,3 +134,32 @@ All colors MUST be HSL.
     background: hsla(var(--glass-bg), 0.95);
   }
 }
+/* --- FORCE LIGHT THEME FOR AUTH PAGES --- */
+
+.auth-page {
+  background: linear-gradient(to bottom, #f7f7f7, #ececec) !important;
+}
+
+.auth-page * {
+  color: #222 !important;
+}
+
+.auth-card {
+  background: #ffffff !important;
+  border: 1px solid #ffd5d5 !important;
+  border-radius: 16px !important;
+  box-shadow: 0px 10px 30px rgba(0,0,0,0.08) !important;
+}
+
+.auth-title {
+  color: #8A0000 !important;
+  font-weight: 700 !important;
+}
+
+.auth-btn {
+  background: #8A0000 !important;
+  color: white !important;
+  border-radius: 9999px !important;
+  padding: 12px !important;
+}
+
