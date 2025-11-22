@@ -36,7 +36,8 @@ export default function StudentAuth() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#F2EDEE]">
+    <div className="min-h-screen flex items-center justify-center bg-[#E9E4E4]
+">
 
       {/* Back Button */}
       <Button
@@ -57,9 +58,10 @@ export default function StudentAuth() {
         <div className="rounded-3xl p-8 bg-white shadow-2xl border border-red-200">
 
           <div className="flex items-center justify-center mb-6">
-            <div className="p-4 rounded-2xl bg-[#AA0000]/15">
-              <GraduationCap className="w-12 h-12 text-[#AA0000]" />
-            </div>
+            <div className="p-4 rounded-2xl bg-[#AA0000]/15 text-4xl flex items-center justify-center">
+  🎓
+</div>
+
           </div>
 
           <h1 className="text-3xl font-bold text-center mb-2 text-gray-900">

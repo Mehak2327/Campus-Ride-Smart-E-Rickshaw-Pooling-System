@@ -26,7 +26,8 @@ export default function AdminAuth() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#F2EDEE] p-4">
+    <div className="min-h-screen flex items-center justify-center bg-[#E9E4E4]
+ p-4">
 
       <Button
         variant="ghost"
