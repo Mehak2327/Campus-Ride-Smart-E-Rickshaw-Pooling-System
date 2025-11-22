@@ -29,7 +29,9 @@ function FeatureCard({
 
 export default function Landing() {
   return (
-    <div className="min-h-screen bg-[#1E1B1B] text-white">
+    <div className="landing-page min-h-screen bg-[#1E1B1B] text-white">
+
+
       <ThaparNavbar />
 
       <main>

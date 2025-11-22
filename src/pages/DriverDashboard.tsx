@@ -1,59 +1,49 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { LogOut, Copy, Check, MapPin, Users } from 'lucide-react';
+import { LogOut, MapPin, Users, CheckCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import { useAppStore } from '@/store/useAppStore';
 import MapPanel from '@/components/MapPanel';
 import { toast } from 'sonner';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
 
-export default function StudentDashboard() {
+export default function DriverDashboard() {
   const demoStep = useAppStore(s => s.demoStep);
-
 if (demoStep === 'idle') {
   return (
-    <div className="p-6 flex flex-col items-center justify-center text-center">
-      <h2 className="text-2xl font-semibold">System Offline</h2>
-      <p className="text-gray-400 mt-2">
-        Please ask the Admin to <span className="font-medium text-white">Seed Data</span> to start the demo.
+    <div className="p-6 text-center">
+      <h2 className="text-xl font-semibold">System Offline</h2>
+      <p className="text-gray-400">
+        Please ask Admin to Seed Data to start the system.
       </p>
     </div>
   );
 }
 
   const navigate = useNavigate();
-  const currentUser = useAppStore((s) => s.currentUser);
-  const students = useAppStore((s) => s.students);
-  const pools = useAppStore((s) => s.pools);
-  const hotspots = useAppStore((s) => s.hotspots);
-  const setCurrentUser = useAppStore((s) => s.setCurrentUser);
-  const initStudentOnlyDemo = useAppStore((s) => s.initStudentOnlyDemo);
+  const currentUser = useAppStore((state) => state.currentUser);
+  const drivers = useAppStore((state) => state.drivers);
+  const pools = useAppStore((state) => state.pools);
+  const students = useAppStore((state) => state.students);
+  const hotspots = useAppStore((state) => state.hotspots);
+  const verifyOtp = useAppStore((state) => state.verifyOtp);
+  const startTrips = useAppStore((state) => state.startTrips);
+  const completeTrips = useAppStore((state) => state.completeTrips);
+  const setCurrentUser = useAppStore((state) => state.setCurrentUser);
 
-  const [pickup, setPickup] = useState('');
-  const [drop, setDrop] = useState('');
-  const [otpCopied, setOtpCopied] = useState(false);
+  const [otpInput, setOtpInput] = useState('');
 
   useEffect(() => {
-  // Auto-login ONLY, do not seed demo here
-  if (!currentUser || currentUser.role !== 'student') {
-    setCurrentUser({ role: 'student', id: 's1' });
+  if (!currentUser || currentUser.role !== 'driver') {
+    setCurrentUser({ role: 'driver', id: 'd1' });
   }
 }, [currentUser]);
 
 
-  const currentStudent = students.find((s) => s.id === currentUser?.id);
-  const currentPool = currentStudent?.poolId ? pools.find((p) => p.id === currentStudent.poolId) : null;
-  const poolMembers = currentPool ? students.filter((s) => currentPool.studentIds.includes(s.id)) : [];
-  const assignedDriver = currentPool
-    ? useAppStore.getState().drivers.find(d => d.assignedPoolId === currentPool.id || d.id === currentPool.driverId)
-    : undefined;
+  const currentDriver = drivers.find((d) => d.id === currentUser?.id);
+  const assignedPool = currentDriver?.assignedPoolId ? pools.find((p) => p.id === currentDriver.assignedPoolId) : null;
+  const poolMembers = assignedPool ? students.filter((s) => assignedPool.studentIds.includes(s.id)) : [];
 
   const handleLogout = () => {
     setCurrentUser(null);
@@ -61,35 +51,43 @@ if (demoStep === 'idle') {
     navigate('/');
   };
 
-  const handleRequestRide = () => {
-    if (!pickup || !drop) {
-      toast.error('Please select pickup and drop locations');
-      return;
+  const handleVerifyOtp = () => {
+    if (!assignedPool) return;
+
+    if (verifyOtp(assignedPool.id, otpInput)) {
+      toast.success('OTP verified successfully! ✨', {
+        description: 'You can now start the trip',
+      });
+      setOtpInput('');
+    } else {
+      toast.error('Invalid OTP', {
+        description: 'Please check the code and try again',
+      });
     }
-    toast.success('Ride requested! You will be pooled with other students.');
   };
 
-  const handleCopyOtp = () => {
-    if (currentPool?.otp) {
-      navigator.clipboard.writeText(currentPool.otp);
-      setOtpCopied(true);
-      toast.success('OTP copied to clipboard');
-      setTimeout(() => setOtpCopied(false), 2000);
+  const handleStartTrip = () => {
+    if (!assignedPool?.otpVerified) {
+      toast.error('Please verify OTP first');
+      return;
     }
+    startTrips();
+    toast.success('Trip started!');
+  };
+
+  const handleCompleteTrip = () => {
+    completeTrips();
+    toast.success('Trip completed successfully!');
   };
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'waiting':
-        return 'bg-warning/20 text-warning border-warning/30';
-      case 'pooled':
-        return 'bg-primary/20 text-primary border-primary/30';
+      case 'idle':
+        return 'bg-muted/20 text-muted-foreground border-muted/30';
       case 'assigned':
         return 'bg-primary/20 text-primary border-primary/30';
       case 'enroute':
         return 'bg-success/20 text-success border-success/30';
-      case 'completed':
-        return 'bg-muted/20 text-muted-foreground border-muted/30';
       default:
         return 'bg-muted/20 text-muted-foreground border-muted/30';
     }
@@ -100,142 +98,148 @@ if (demoStep === 'idle') {
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }}>
-            <h1 className="text-4xl font-bold neon-text">Student Dashboard</h1>
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+          >
+            <h1 className="text-4xl font-bold neon-text">Driver Dashboard</h1>
             <p className="text-muted-foreground mt-1">
-              {currentStudent ? `${currentStudent.name} • ${currentStudent.roll}` : 'Welcome back'}
+              {currentDriver ? `${currentDriver.name} • ${currentDriver.plate}` : 'Welcome back'}
             </p>
           </motion.div>
 
-          <Button variant="ghost" onClick={handleLogout} className="text-muted-foreground hover:text-danger">
+          <Button
+            variant="ghost"
+            onClick={handleLogout}
+            className="text-muted-foreground hover:text-danger"
+          >
             <LogOut className="w-4 h-4 mr-2" />
             Logout
           </Button>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* Request Ride Card */}
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="glass-strong rounded-2xl p-6">
-            <div className="flex items-center mb-4">
-              <MapPin className="w-5 h-5 text-primary mr-2" />
-              <h2 className="text-xl font-semibold">Request a Ride</h2>
-            </div>
-
-            <div className="space-y-4">
-              <div>
-                <label className="text-sm text-muted-foreground mb-2 block">Pickup Location</label>
-                <Select value={pickup} onValueChange={setPickup}>
-                  <SelectTrigger className="glass">
-                    <SelectValue placeholder="Select pickup location" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {hotspots.map((h) => (
-                      <SelectItem key={h.id} value={h.id}>
-                        {h.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-
-              <div>
-                <label className="text-sm text-muted-foreground mb-2 block">Drop Location</label>
-                <Select value={drop} onValueChange={setDrop}>
-                  <SelectTrigger className="glass">
-                    <SelectValue placeholder="Select drop location" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {hotspots.map((h) => (
-                      <SelectItem key={h.id} value={h.id}>
-                        {h.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-
-              <Button onClick={handleRequestRide} className="w-full bg-primary hover:bg-primary/90 text-primary-foreground glow-primary">
-                Request Ride Now
-              </Button>
-            </div>
-          </motion.div>
-
-          {/* Pool Status Card */}
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="glass-strong rounded-2xl p-6">
+          {/* Assignment Card */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="glass-strong rounded-2xl p-6"
+          >
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center">
-                <Users className="w-5 h-5 text-primary mr-2" />
-                <h2 className="text-xl font-semibold">My Pool</h2>
+                <Users className="w-5 h-5 text-secondary mr-2" />
+                <h2 className="text-xl font-semibold">Current Assignment</h2>
               </div>
-              {currentStudent && (
-                <span className={`px-3 py-1 rounded-full text-xs font-semibold border ${getStatusColor(currentStudent.status)}`}>
-                  {currentStudent.status.toUpperCase()}
+              {currentDriver && (
+                <span className={`px-3 py-1 rounded-full text-xs font-semibold border ${getStatusColor(currentDriver.status)}`}>
+                  {currentDriver.status.toUpperCase()}
                 </span>
               )}
             </div>
 
-            {currentPool ? (
+            {assignedPool ? (
               <div className="space-y-4">
-                {/* OTP Display */}
-                {currentPool.otp && (
-                  <div className="glass rounded-lg p-4 border border-primary/30">
-                    <p className="text-xs text-muted-foreground mb-2">Group OTP (Share with driver)</p>
-                    <div className="flex items-center justify-between">
-                      <code className="text-2xl font-mono font-bold text-primary tracking-wider">
-                        {currentPool.otp}
-                      </code>
-                      <Button size="sm" variant="ghost" onClick={handleCopyOtp} className="text-primary hover:text-primary/80">
-                        {otpCopied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
-                      </Button>
-                    </div>
-                    {assignedDriver && (
-                      <div className="mt-3 text-sm text-muted-foreground">
-                        Auto:&nbsp;<span className="font-semibold">Auto A</span>&nbsp;•&nbsp;
-                        Driver:&nbsp;<span className="font-semibold">{assignedDriver.name}</span>&nbsp;•&nbsp;
-                        Plate:&nbsp;<span className="font-mono">{assignedDriver.plate}</span>
-                      </div>
-                    )}
+                {/* Route Info */}
+                <div className="glass rounded-lg p-4 border border-secondary/30">
+                  <div className="flex items-center text-sm">
+                    <MapPin className="w-4 h-4 text-primary mr-2" />
+                    <span className="text-muted-foreground mr-2">Pickup:</span>
+                    <span className="font-semibold">{hotspots.find((h) => h.id === assignedPool.pickup)?.name}</span>
                   </div>
-                )}
+                  <div className="flex items-center text-sm mt-2">
+                    <MapPin className="w-4 h-4 text-success mr-2" />
+                    <span className="text-muted-foreground mr-2">Drop:</span>
+                    <span className="font-semibold">{hotspots.find((h) => h.id === assignedPool.drop)?.name}</span>
+                  </div>
+                  <div className="mt-2 text-sm">
+                    <span className="text-muted-foreground">Pool Size:</span>
+                    <span className="font-semibold ml-2">{poolMembers.length}/4</span>
+                  </div>
+                </div>
 
                 {/* Pool Members */}
                 <div>
-                  <p className="text-sm text-muted-foreground mb-3">Pool Members ({poolMembers.length}/4)</p>
+                  <p className="text-sm text-muted-foreground mb-3">Passengers</p>
                   <div className="space-y-2">
                     {poolMembers.map((member) => (
                       <div key={member.id} className="glass rounded-lg p-3 flex items-center">
-                        <div
-                          className="w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm mr-3"
-                          style={{ background: member.color ?? 'var(--primary)' }}
-                          title={member.name}
-                        >
+                        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary/30 to-secondary/30 flex items-center justify-center font-bold text-sm mr-3">
                           {member.name.split(' ').map((n) => n[0]).join('')}
                         </div>
                         <div className="flex-1">
-                          <p className="font-semibold text-sm">{member.name}</p>
-                          <p className="text-xs text-muted-foreground">{member.roll}</p>
+                          <p className="font-semibold text-sm">{member.name.split(' ')[0]}</p>
+                          <p className="text-xs text-muted-foreground font-mono">***{member.roll.slice(-3)}</p>
                         </div>
-                        {member.id === currentUser?.id && <span className="text-xs text-primary font-semibold">You</span>}
                       </div>
                     ))}
                   </div>
                 </div>
+
+                {/* OTP Verification */}
+                {!assignedPool.otpVerified ? (
+                  <div className="glass rounded-lg p-4 border border-warning/30">
+                    <p className="text-sm text-muted-foreground mb-3">Enter Group OTP</p>
+                    <div className="flex gap-2">
+                      <Input
+                        type="text"
+                        placeholder="6-digit code"
+                        value={otpInput}
+                        onChange={(e) => setOtpInput(e.target.value)}
+                        maxLength={6}
+                        className="glass font-mono text-lg tracking-wider"
+                      />
+                      <Button
+                        onClick={handleVerifyOtp}
+                        className="bg-primary hover:bg-primary/90 text-primary-foreground"
+                      >
+                        Verify
+                      </Button>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="glass rounded-lg p-4 border border-success/30 flex items-center">
+                    <CheckCircle className="w-5 h-5 text-success mr-2" />
+                    <span className="text-sm font-semibold text-success">OTP Verified ✓</span>
+                  </div>
+                )}
+
+                {/* Trip Controls */}
+                <div className="space-y-2">
+                  {assignedPool.status === 'verified' && (
+                    <Button
+                      onClick={handleStartTrip}
+                      className="w-full bg-success hover:bg-success/90 text-background"
+                    >
+                      Start Trip
+                    </Button>
+                  )}
+                  {assignedPool.status === 'started' && (
+                    <Button
+                      onClick={handleCompleteTrip}
+                      className="w-full bg-success hover:bg-success/90 text-background"
+                    >
+                      Complete Trip
+                    </Button>
+                  )}
+                </div>
               </div>
             ) : (
               <div className="text-center py-8">
-                <p className="text-muted-foreground">No active pool</p>
-                <p className="text-sm text-muted-foreground mt-1">Request a ride to get started</p>
+                <p className="text-muted-foreground">No assignments yet</p>
+                <p className="text-sm text-muted-foreground mt-1">Wait for admin to assign a pool</p>
               </div>
             )}
           </motion.div>
 
-          {/* Map */}
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="lg:col-span-2">
-            <div className="glass-strong rounded-2xl p-6">
-              <h2 className="text-xl font-semibold mb-4">Live Tracking</h2>
-              {/* Show ONLY my pool (4 students + assigned auto) */}
-              <MapPanel height="500px" filterPoolId={currentPool?.id} />
-            </div>
+          {/* Mini Map */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+            className="glass-strong rounded-2xl p-6"
+          >
+            <h2 className="text-xl font-semibold mb-4">Route Preview</h2>
+            <MapPanel height="400px" />
           </motion.div>
         </div>
       </div>
