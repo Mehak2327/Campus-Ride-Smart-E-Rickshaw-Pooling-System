@@ -36,8 +36,7 @@ export default function StudentAuth() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#DCD6D6]
-  p-4">
+    <div className="min-h-screen flex items-center justify-center bg-[#E6DADA] p-4">
 
       {/* Back Button */}
       <Button
@@ -59,9 +58,8 @@ export default function StudentAuth() {
 
           <div className="flex items-center justify-center mb-6">
             <div className="p-4 rounded-2xl bg-[#AA0000]/15 text-4xl flex items-center justify-center">
-  🎓
-</div>
-
+              🎓
+            </div>
           </div>
 
           <h1 className="text-3xl font-bold text-center mb-2 text-gray-900">

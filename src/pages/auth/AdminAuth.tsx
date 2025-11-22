@@ -26,9 +26,7 @@ export default function AdminAuth() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#DCD6D6]
-
- p-4">
+    <div className="min-h-screen flex items-center justify-center bg-[#E6DADA] p-4">
 
       <Button
         variant="ghost"
@@ -47,7 +45,6 @@ export default function AdminAuth() {
       >
         <div className="rounded-3xl p-8 bg-white shadow-2xl border border-red-200">
 
-          {/* Icon */}
           <div className="flex items-center justify-center mb-6">
             <div className="p-4 rounded-2xl bg-[#AA0000]/15 text-4xl">
               🧑🏻‍💼
@@ -57,6 +54,7 @@ export default function AdminAuth() {
           <h1 className="text-3xl font-bold text-center mb-2 text-gray-900">
             Admin Portal
           </h1>
+
           <p className="text-center text-gray-600 mb-6">Sign in to continue</p>
 
           <form onSubmit={handleSubmit} className="space-y-4">
@@ -89,6 +87,7 @@ export default function AdminAuth() {
               Sign In
             </Button>
           </form>
+
         </div>
       </motion.div>
     </div>
