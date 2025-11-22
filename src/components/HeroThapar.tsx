@@ -20,8 +20,8 @@ export default function HeroThapar() {
         </h1>
 
         <p className="mt-5 text-lg text-gray-700 leading-relaxed">
-          Faster, safer and greener rides inside Thapar University. Pool with classmates,
-          track rides in real time & verify with OTP.
+          Faster, safer and greener rides inside Thapar University.
+          Pool with classmates, track rides in real time & verify with OTP.
         </p>
 
         <div className="mt-8 flex justify-center gap-4">
@@ -41,7 +41,7 @@ export default function HeroThapar() {
         </div>
 
         <p className="mt-6 text-sm text-gray-500">
-          <b>Note:</b> UI-only upgrade. Backend routes and demo flows remain identical.
+          <b>Note:</b> UI-only upgrade. Backend routes remain same.
         </p>
       </div>
 
