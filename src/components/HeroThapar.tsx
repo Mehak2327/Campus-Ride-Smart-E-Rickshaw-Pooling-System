@@ -5,23 +5,23 @@ export default function HeroThapar() {
     <header className="relative h-[85vh] flex items-center justify-start bg-white">
 
       {/* Background Image */}
-      {/* Background Image */}
-<div
-  className="absolute inset-0 bg-cover bg-center"
-  style={{ backgroundImage: "url('/thapar.jpg')" }}
-/>
+      <div
+        className="absolute inset-0 bg-cover bg-center"
+        style={{ backgroundImage: "url('/thapar.jpg')" }}
+      />
 
-{/* Soft fade at bottom only */}
-<div className="absolute inset-0 bg-gradient-to-b from-transparent to-white/20" />
+      {/* Soft fade at bottom only */}
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent to-white/20" />
 
+      {/* LEFT ALIGNED CONTENT - UPDATED FOR BETTER READABILITY */}
+      <div className="relative z-10 max-w-3xl px-16 text-left 
+        bg-white/20 backdrop-blur-md rounded-2xl shadow-md p-6 mx-4">
 
-      {/* LEFT ALIGNED CONTENT */}
-      <div className="relative z-10 max-w-3xl px-16 text-left">
-        <h1 className="text-5xl font-extrabold text-gray-900 leading-tight">
+        <h1 className="text-5xl font-extrabold text-gray-900 leading-tight drop-shadow-lg">
           Thapar Campus Mobility Service
         </h1>
 
-        <p className="mt-5 text-lg text-gray-700 leading-relaxed max-w-xl">
+        <p className="mt-5 text-lg text-gray-800 leading-relaxed max-w-xl drop-shadow">
           A secure, efficient and eco-friendly transportation service inside Thapar University.
           Real-time tracking, student verification & intelligent pooling.
         </p>
