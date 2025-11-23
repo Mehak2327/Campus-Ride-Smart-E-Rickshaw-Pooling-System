@@ -5,13 +5,15 @@ export default function HeroThapar() {
     <header className="relative h-[85vh] flex items-center justify-start bg-white">
 
       {/* Background Image */}
-      <div
-        className="absolute inset-0 bg-cover bg-center opacity-40"
-        style={{ backgroundImage: "url('/thapar.jpg')" }}
-      />
+      {/* Background Image */}
+<div
+  className="absolute inset-0 bg-cover bg-center"
+  style={{ backgroundImage: "url('/thapar.jpg')" }}
+/>
 
-      {/* Soft Gradient */}
-      <div className="absolute inset-0 bg-gradient-to-b from-white/90 via-white/70 to-white/40" />
+{/* Soft fade at bottom only */}
+<div className="absolute inset-0 bg-gradient-to-b from-transparent to-white/20" />
+
 
       {/* LEFT ALIGNED CONTENT */}
       <div className="relative z-10 max-w-3xl px-16 text-left">
